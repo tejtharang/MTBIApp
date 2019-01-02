@@ -1,0 +1,115 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="helperFunctions.js" ></script>
+<style>
+    /*#regForm {
+        background-color: #ffffff;
+        margin: 70px auto;
+        padding: 20px;
+        width: 70%;
+        min-width: 300px;
+    }*/
+
+    /* Style the input fields */
+    /*    input {
+            padding: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-family: Raleway;
+            border: 1px solid #aaaaaa;
+        }
+    */
+    /* Mark input boxes that gets an error on validation: */
+    /*    input.invalid {
+            background-color: #ffdddd;
+        }
+    */
+    /* Hide all steps by default: */
+    .container {
+        padding-top: 40px;
+    }
+    .mainpagepad{
+        padding-top: 150px;
+    }
+    .tab {
+        display: none;
+    }
+    .heading{
+        padding-left: 5px;
+    }
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.3;
+    }
+
+    /* Mark the active step: */
+    .step.active {
+        opacity: 1;
+    }
+
+    /* Mark the steps that are finished and valid: */
+    .step.finish {
+        background-color: #4CAF50;
+    }
+
+    .padleft{
+        padding-left: 15px;
+    }
+    .padleftbutton{
+        padding-left: 25px;
+    }
+    .logot{
+        padding-left: 5px;
+        padding-top: 5px;
+    }
+    .star{
+        color:red;
+    }
+
+</style>
+<button class="btn btn-primary"  onclick="logout()">Log Out</button>
+<body>
+<div class="container">
+    <div class="text-center">
+        <img src="/MTBIlogo.png">
+    </div>
+    <div class="row">
+        <p class="h3 text-center"> Thank you for submitting your application for the MTBI summer program!</p>
+    </div>
+    <div class="row">
+        <p class="h4 text-center"> You will be notified of a decision by March 20</p>
+    </div>
+    <br>
+    <p>Please remember :</p>
+    <ul>
+        <li>To send an official copy of your transcripts.</li><br>
+        <li>To follow up with your faculty recommender regarding the Faculty Recommendation Form and the Letter of Recommendation, if you need to print forms for your faculty recommender, you can find them on the MTBI website: <a href="https://mtbi.asu.edu/summerprogram">MTBI</a></li><br>
+        <li>To double check the <a href="mtbi_online_app_checklist.pdf" target="_blank">MTBI On-line Application Checklist</a>, incomplete or late applications will not be accepted.</li>
+    </ul>
+</div>
+</body>
+
+</html>

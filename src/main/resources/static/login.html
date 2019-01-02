@@ -1,0 +1,144 @@
+<html>
+<head><center><h1>Login</h1></center>
+    <meta charset="UTF-8">
+    <title>Add new user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/core.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            background-image: white;
+            background-size: cover;
+            background-position: center;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            font-family: "Lato";
+            color: white;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 5em;
+        }
+
+
+        .content {
+            text-align: center;
+            color: gray;
+            text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1),
+            0px 8px 13px rgba(0, 0, 0, 0.1),
+            0px 18px 23px rgba(0, 0, 0, 0.1);
+        }
+
+        /*hr {
+            width: 500px;
+            border-top: 1px solid #f8f8f8;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        }*/
+    </style>
+
+</head>
+<div class="container">
+
+
+    <div class="content">
+        <a href="https://math.asu.edu/">
+            <img src="MTBIlogo.png" />
+        </a>
+        <h3>MTBI Summer Program Login</h3>
+        <hr>
+        <form id="myform">
+
+            <div class="form-group row">
+
+                <label for="username" class="col-sm-5 control-label">Username</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <label for="password" class="col-sm-5 control-label">Password</label>
+                <div class="col-sm-7">
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+            </div>
+
+
+        </form>
+
+        <button type="button" onclick="register()" > submit</button>
+    </div>
+    </div>
+<script>
+    $.fn.serializeObject = function() {
+        var o = Object.create(null),
+            elementMapper = function(element) {
+                element.name = $.camelCase(element.name);
+                return element;
+            },
+            appendToResult = function(i, element) {
+                var node = o[element.name];
+
+                if ('undefined' != typeof node && node !== null) {
+                    o[element.name] = node.push ? node.push(element.value) : [node, element.value];
+                } else {
+                    o[element.name] = element.value;
+                }
+            };
+
+        $.each($.map(this.serializeArray(), elementMapper), appendToResult);
+        return o;
+    }
+
+    function register(){
+
+        var formData = $("#myform").serializeObject();
+        console.log(formData);
+        $.ajax({
+            url : '/loginAuthentication',
+            type : 'post',
+            data : JSON.stringify(formData),
+            datatype : 'json',
+            contentType : 'application/json',
+            success: function (data){
+                if(data == "no_error"){
+                    window.location.href="/applicationform";
+                }
+                else if(data == "form_submitted")
+                {
+                    window.location.href="/form_submitted";
+                }                else{
+                    alert("Incorrect login information");
+                }
+
+            },
+            error: function(){
+                alert("Incorrect username or password");
+            }
+
+
+        });
+    }
+</script>
+</html>
