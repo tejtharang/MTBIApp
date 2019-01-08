@@ -181,6 +181,7 @@ public class MainController {
         if(fileName != null) {
             try {
                 String path = "/home/beck/mtbi/" + userId;
+                //String path = "/Users/tej/Desktop/saved/" + userId;
                 (new File(path)).mkdirs();
 
                 byte [] decodedBytes = org.glassfish.jersey.internal.util.Base64.decode(fileContent.getBytes());
@@ -258,7 +259,7 @@ public class MainController {
         if(fileName != null) {
                 try {
                     String path = "/home/beck/mtbi/" + userId;
-
+                    //String path = "/Users/tej/Desktop/saved/" + userId;
                                        (new File(path)).mkdirs();
 
                     byte [] decodedBytes = org.glassfish.jersey.internal.util.Base64.decode(fileContent.getBytes());
@@ -459,6 +460,8 @@ public class MainController {
         helper_facultyRecommender.setTo(studentSubmission.getStudentFinalWaiver().getRecommenderEmail());
         helper_facultyRecommender.setText(facultyRecommenderMessage);
 
+
+        //FileSystemResource file = new FileSystemResource("/home/beck/mtbi/Faculty_Letter_Of_Recommendation_Form.pdf");
         FileSystemResource file = new FileSystemResource("/home/beck/mtbi/Faculty_Letter_Of_Recommendation_Form.pdf");
         helper_facultyRecommender.addAttachment("Faculty_Letter_of_Recommendation_form.pdf",file);
         helper_facultyRecommender.setSubject("MTBI summer program faculty recommendation");

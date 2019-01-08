@@ -1,7 +1,8 @@
 var username;
 function showHomeAddressDiv() {
     var countrySelectElement = document.getElementById("countryHome");
-    var countryCode = countrySelectElement.options[countrySelectElement.selectedIndex].value;
+    //var countryCode = countrySelectElement.options[countrySelectElement.selectedIndex].value;
+    var countryCode = countrySelectElement.value;
     if (countryCode == "USA") {
         console.log(1);
         $('#USAAddressHome').find('*').attr('disabled', false);
@@ -12,6 +13,9 @@ function showHomeAddressDiv() {
         $("#ForeignAddressHome").prop('disabled', true);
         $("#ForeignAddressHome").children().prop('disabled', true);
         $('#ForeignAddressHome').find('*').attr('disabled', true);
+    }
+    else if (countryCode == ""){
+        console.log(2);
     }
     else {
         console.log(0);
@@ -30,28 +34,33 @@ function showHomeAddressDiv() {
 
 function showAcademicAddressDiv() {
     var countrySelectElement = document.getElementById("countryAcademic");
-    var countryCode = countrySelectElement.options[countrySelectElement.selectedIndex].value;
+    //var countryCode = countrySelectElement.options[countrySelectElement.selectedIndex].value;
+    var countryCode = countrySelectElement.value;
     if (countryCode == "USA") {
         console.log(1);
-        $('#USAAddressAcademic').find('*').attr('disabled', false);
-        $("#USAAddressAcademic").show();
-        $("#USAAddressAcademic").prop('disabled', false);
-        $("#USAAddressAcademic").children().prop('disabled', false);
         $("#ForeignAddressAcademic").hide();
         $("#ForeignAddressAcademic").prop('disabled', true);
         $("#ForeignAddressAcademic").children().prop('disabled', true);
         $('#ForeignAddressAcademic').find('*').attr('disabled', true);
+        $('#USAAddressAcademic').find('*').attr('disabled', false);
+        $("#USAAddressAcademic").show();
+        $("#USAAddressAcademic").prop('disabled', false);
+        $("#USAAddressAcademic").children().prop('disabled', false);
+
+    }
+    else if(countryCode == ""){
+        console.log(2);
     }
     else {
         console.log(0);
-        $('#ForeignAddressAcademic').find('*').attr('disabled', false);
-        $("#ForeignAddressAcademic").show();
-        $("#ForeignAddressAcademic").prop('disabled', false);
-        $("#ForeignAddressAcademic").children().prop('disabled', false);
         $("#USAAddressAcademic").hide();
         $("#USAAddressAcademic").prop('disabled', true);
         $("#USAAddressAcademic").children().prop('disabled', true);
         $('#USAAddressAcademic').find('*').attr('disabled', true);
+        $('#ForeignAddressAcademic').find('*').attr('disabled', false);
+        $("#ForeignAddressAcademic").show();
+        $("#ForeignAddressAcademic").prop('disabled', false);
+        $("#ForeignAddressAcademic").children().prop('disabled', false);
 
     }
 }
@@ -149,6 +158,7 @@ function revealExtraDegrees() {
 }
 function getTemplateRow(templateRow) {
     var x = document.getElementById(templateRow).cloneNode(true);
+
     x.id = "";
     x.style.display = "";
     return x;
@@ -189,11 +199,12 @@ function addRow(tableName) {
     var rows = t.getElementsByTagName("tr");
     var r = rows[rows.length - 1];
     if (rows.length < rowLimit) {
-
+        console.log(getTemplateRow(templateRow))
         r.parentNode.insertBefore(getTemplateRow(templateRow), r.nextSibling);
 
     }
-    //changeRowNumbers(t);
+
+    emptyLastAddedRow(t);
 }
 
 function deleteRow(tableName, row) {
@@ -207,18 +218,19 @@ function deleteRow(tableName, row) {
     }
 }
 
-function changeRowNumbers(t) {
+function emptyLastAddedRow(t) {
     console.log("enters");
     var rows = t.getElementsByTagName("tr");
     if(rows.length > 1){
-        var rowLength = rows.length - 1
-        var i = 0;
-        for (i = 1; i <= rowLength; i++) {
+        var lastrow = rows[rows.length -1];
+        for (var i = 0; i < lastrow.cells.length; i++) {
             console.log(i);
-            var col = rows[i].getElementsByTagName("td");
-            col[0].innerHTML = i;
+            lastrow.cells[i].children[0].value = "";
+            console.log(lastrow.cells[i].children[0].value);
         }
     }
+
+
 }
 
 var x = document.getElementsByTagName("label");
@@ -663,10 +675,21 @@ function checkRequired(list){
 
     for(var i=0;i<list.length;i++) {
         if(document.getElementById(list[i]).value == ""){
+            console.log(document.getElementById(list[i]).value);
             return true;
         }
     }
 
+    return false;
+}
+
+function checkRequiredForAddress(list){
+    for(var i=0;i<list.length;i++) {
+        if(document.getElementById(list[i]).innerText == ""){
+            console.log(document.getElementById(list[i]).innerText);
+            return true;
+        }
+    }
     return false;
 }
 
@@ -713,27 +736,27 @@ function submitform(){
         "suffix" : document.getElementById("suffix").value
     };
 
-    var requiredlistStudentHomeAddressAndPhone = ["countryHome","address1Home","cityHome","stateHome","zipHome"];
-    if(checkRequired(requiredlistStudentHomeAddressAndPhone)){
+    var requiredlistStudentHomeAddressAndPhone = ["countryHomeReview","address1HomeReview","cityHomeReview","stateHomeReview","zipHomeReview"];
+    if(checkRequiredForAddress(requiredlistStudentHomeAddressAndPhone)){
         flag = "Home Address and Phone section incomplete";
         console.log(flag);
     }
     var studentHomeAddressAndPhone = {
         "userId" : username,
-        "country" : document.getElementById("countryHome").value,
-        "addressLine1": document.getElementById("address1Home").value,
-        "addressLine2": document.getElementById("address2Home").value,
-        "city" : document.getElementById("cityHome").value,
-        "state" : document.getElementById("stateHome").value,
-        "zip" : document.getElementById("zipHome").value,
-        "mailReceivable" : document.getElementById("mailAddressCheckHome").value,
-        "homePhone" : document.getElementById("homePhoneHome").value,
-        "mobilePhone" : document.getElementById("mobilePhoneHome").value
+        "country" : document.getElementById("countryHomeReview").innerText,
+        "addressLine1": document.getElementById("address1HomeReview").innerText,
+        "addressLine2": document.getElementById("address2HomeReview").innerText,
+        "city" : document.getElementById("cityHomeReview").innerText,
+        "state" : document.getElementById("stateHomeReview").innerText,
+        "zip" : document.getElementById("zipHomeReview").innerText,
+        "mailReceivable" : document.getElementById("mailAddressCheckHome").innerText,
+        "homePhone" : document.getElementById("homePhoneHome").innerText,
+        "mobilePhone" : document.getElementById("mobilePhoneHome").innerText
     };
 
-    var requiredListStudentAcademicYearAddressAndPhone = ["countryAcademic","address1Academic","cityAcademic","stateAcademic","zipAcademic"];
+    var requiredListStudentAcademicYearAddressAndPhone = ["countryAcademicReview","address1AcademicReview","cityAcademicReview","stateAcademicReview","zipAcademicReview"];
     //flags.push(checkRequired(requiredListStudentAcademicYearAddressAndPhone,"Academic Address and Phone section incomplete"));
-    if(checkRequired(requiredListStudentAcademicYearAddressAndPhone)){
+    if(checkRequiredForAddress(requiredListStudentAcademicYearAddressAndPhone)){
         flag = "Academic Address and Phone section incomplete";
         console.log(flag);
     }
@@ -1060,6 +1083,9 @@ function submitform(){
             success: function () {
                 alert("successfully submitted the form. You may now logout");
                 window.location.href="/form_submitted";
+            },
+            error : function () {
+                alert("Error occured. Please try again later. If the problem persists, please contact Rebecca Perlin at rebecca.perlin@asu.edu");
             }
 
         });
@@ -1163,6 +1189,7 @@ function populate(data){
     document.getElementById("homePhoneAcademic").value = studentAcademicYearAddressAndPhone["homePhone"];
     document.getElementById("mobilePhoneAcademic").value = studentAcademicYearAddressAndPhone["mobilePhone"];
 
+    revealAddress(studentHomeAddressAndPhone["country"], studentAcademicYearAddressAndPhone["country"]);
     // Gender
     var studentPersonalInfo = data["studentPersonalInfo"];
     document.getElementById("dob").value = studentPersonalInfo["dateOfBirth"];
@@ -1361,7 +1388,7 @@ function populate(data){
             row.cells[1].children[0].value = studentMathCoursesCompletedList[i - 1]["semester"];
             row.cells[2].children[0].value = studentMathCoursesCompletedList[i - 1]["year"];
             row.cells[3].children[0].value = studentMathCoursesCompletedList[i - 1]["courseTitle"].substring(0,studentMathCoursesCompletedList[i - 1]["courseTitle"].length - 4);
-            row.cells[4].children[0].value = studentMathCoursesCompletedList[i - 1]["year"];
+            row.cells[4].children[0].value = studentMathCoursesCompletedList[i - 1]["grade"];
             row.cells[5].children[0].value = studentMathCoursesCompletedList[i - 1]["collegeOrUniversity"];
         }
     }
@@ -1373,7 +1400,7 @@ function populate(data){
             row.cells[1].children[0].value = studentSciCoursesCompletedList[i - 1]["semester"];
             row.cells[2].children[0].value = studentSciCoursesCompletedList[i - 1]["year"];
             row.cells[3].children[0].value = studentSciCoursesCompletedList[i - 1]["courseTitle"].substring(0,studentSciCoursesCompletedList[i - 1]["courseTitle"].length - 4);
-            row.cells[4].children[0].value = studentSciCoursesCompletedList[i - 1]["year"];
+            row.cells[4].children[0].value = studentSciCoursesCompletedList[i - 1]["grade"];
             row.cells[5].children[0].value = studentSciCoursesCompletedList[i - 1]["collegeOrUniversity"];
 
         }
@@ -1417,6 +1444,60 @@ function populate(data){
     }
 }
 
+function revealAddress(home, academic){
+    if(home == "USA"){
+        console.log(1);
+        $('#USAAddressHome').find('*').attr('disabled', false);
+        $("#USAAddressHome").show();
+        $("#USAAddressHome").prop('disabled', false);
+        $("#USAAddressHome").children().prop('disabled', false);
+        $("#ForeignAddressHome").hide();
+        $("#ForeignAddressHome").prop('disabled', true);
+        $("#ForeignAddressHome").children().prop('disabled', true);
+        $('#ForeignAddressHome').find('*').attr('disabled', true);
+    }
+    else if(home == ""){
+        console.log(2);
+    }
+    else{
+        console.log(0);
+        $('#ForeignAddressHome').find('*').attr('disabled', false);
+        $("#ForeignAddressHome").show();
+        $("#ForeignAddressHome").prop('disabled', false);
+        $("#ForeignAddressHome").children().prop('disabled', false);
+        $("#USAAddressHome").hide();
+        $("#USAAddressHome").prop('disabled', true);
+        $("#USAAddressHome").children().prop('disabled', true);
+        $('#USAAddressHome').find('*').attr('disabled', true);
+    }
+
+    if (academic == "USA") {
+        console.log(1);
+        $('#USAAddressAcademic').find('*').attr('disabled', false);
+        $("#USAAddressAcademic").show();
+        $("#USAAddressAcademic").prop('disabled', false);
+        $("#USAAddressAcademic").children().prop('disabled', false);
+        $("#ForeignAddressAcademic").hide();
+        $("#ForeignAddressAcademic").prop('disabled', true);
+        $("#ForeignAddressAcademic").children().prop('disabled', true);
+        $('#ForeignAddressAcademic').find('*').attr('disabled', true);
+    }
+    else if(academic == ""){
+        console.log(2);
+    }
+    else {
+        console.log(0);
+        $('#ForeignAddressAcademic').find('*').attr('disabled', false);
+        $("#ForeignAddressAcademic").show();
+        $("#ForeignAddressAcademic").prop('disabled', false);
+        $("#ForeignAddressAcademic").children().prop('disabled', false);
+        $("#USAAddressAcademic").hide();
+        $("#USAAddressAcademic").prop('disabled', true);
+        $("#USAAddressAcademic").children().prop('disabled', true);
+        $('#USAAddressAcademic').find('*').attr('disabled', true);
+
+    }
+}
 function onloadFunction(){
 
     $.ajax({
@@ -1437,6 +1518,7 @@ function onloadFunction(){
     console.log("2222");
     showTab(currentTab);
     console.log(formDataRetrieved);
+
 
 }
 
@@ -1490,6 +1572,7 @@ function showReview(){
             document.getElementById("address2HomeReview").innerText = address2HomeList[i].value;
             document.getElementById("cityHomeReview").innerText = cityHomeList[i].value;
             document.getElementById("stateHomeReview").innerText = stateHomeList[i].value;
+            document.getElementById("zipHomeReview").innerText = zipHomeList[i].value;
             document.getElementById("zipHomeReview").innerText = zipHomeList[i].value;
             document.getElementById("mailAddressCheckHomeReview").innerText = mailAddressCheckHomeList[i].value;
             document.getElementById("homePhoneHomeReview").innerText = homePhoneHomeList[i].value;
