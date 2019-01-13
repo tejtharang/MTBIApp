@@ -81,6 +81,7 @@
             <th scope="col" data-field="firstName">First Name</th>
             <th scope="col" data-field="lastName">Last Name</th>
             <th scope="col" data-field="userName">Username</th>
+            <th scope="col" data-field="status">Status</th>
         </thead>
         <tbody id="tableBody">
 
@@ -150,11 +151,15 @@
         function fillStudentDetails(data) {
             console.log("fill in student details");
               for(var i=0;i<data.length;i++) {
+                  var element = "<td scope='row'><span style='color:red'>In progress</span></td>";
+                  if(data[i].submitted == "1")
+                      element = "<td scope='row'><span style='color:green'>Completed</span></td>";
                   var tr = "<tr>" +
                       "<td scope='row'>"+ String(i+1)  +"</td>" +
                       "<td scope='row'>"+ data[i].firstName + "</td>" +
                       "<td scope='row'>"+ data[i].lastName + "</td>" +
                       "<td scope='row'>"+ "<a href='#' onclick='getApplicantData(\"" + String(data[i].userId) + "\"); return false;' >" + data[i].userId +"</a>" + "</td>" +
+                          element +
                         "</tr>";
                   console.log(tr);
                   $('#tableBody').append(tr);

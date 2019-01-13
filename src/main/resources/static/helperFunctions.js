@@ -702,21 +702,15 @@ function submitform(){
     if(document.getElementById("eligibility1").checked){
         eligibility1 = "yes";
     }
-    else{
-        flag = "Eligibility criteria on the Eligibility page unchecked.";
-    }
+
     if(document.getElementById("eligibility2").checked){
         eligibility2 = "yes";
     }
-    else{
-        flag = "Eligibility criteria on the Eligibility page unchecked.";
-    }
+
     if(document.getElementById("eligibility3").checked){
         eligibility3 = "yes";
     }
-    else{
-        flag = "Eligibility criteria on the Eligibility page unchecked.";
-    }
+
     var studentEligibility = {
         "userId" : username,
         "eligibility1" : eligibility1,

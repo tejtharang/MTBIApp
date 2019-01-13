@@ -29,6 +29,7 @@ import com.tharang.demo.personalStatement.StudentPersonalStatement;
 import com.tharang.demo.personalStatement.StudentPersonalStatementBAO;
 import com.tharang.demo.personalStatement.StudentPersonalStatementRepository;
 import com.tharang.demo.respository.RoleRepository;
+import com.tharang.demo.row.StudentRow;
 import com.tharang.demo.service.SecurityService;
 import com.tharang.demo.service.UserService;
 import com.tharang.demo.submission.StudentSubmission;
@@ -398,13 +399,19 @@ public class MainController {
     }
 
     @PostMapping(value = "/applicantList")
-    public ResponseEntity<List<StudentName>> entireApplicantList(){
-        List<StudentName> list = new ArrayList<StudentName>();
+    public ResponseEntity<List<StudentRow>> entireApplicantList(){
+        List<StudentRow> list = new ArrayList<StudentRow>();
         try{
             for(User user : userRepository.findAll()){
                 if(studentNameRepository.existsByUserId(user.getUsername())) {
-                    list.add(studentNameRepository.findByUserId(user.getUsername()));
+                    StudentRow sr = new StudentRow();
+                    sr.setSubmitted(user.getSubmitted());
+                    sr.setFirstName(studentNameRepository.findByUserId(user.getUsername()).getFirstName());
+                    sr.setLastName(studentNameRepository.findByUserId(user.getUsername()).getLastName());
+                    sr.setUserId(user.getUsername());
+                    list.add(sr);
                 }
+
             }
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
