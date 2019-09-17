@@ -75,6 +75,9 @@
         <h3>MTBI Summer Programme Login</h3>
         <hr>
     </div>
+    <div class="row">
+        <p style="color:black">The complete data of students who have submitted their application can be downloaded as an excel spreadsheet at this <a href="/consolidated">link</a></p>
+    </div>
     <table id="studentListTable" class="table">
         <thead>
             <th scope="col" data-field="sno">S.No.</th>
@@ -158,12 +161,18 @@
                       "<td scope='row'>"+ String(i+1)  +"</td>" +
                       "<td scope='row'>"+ data[i].firstName + "</td>" +
                       "<td scope='row'>"+ data[i].lastName + "</td>" +
-                      "<td scope='row'>"+ "<a href='#' onclick='getApplicantData(\"" + String(data[i].userId) + "\"); return false;' >" + data[i].userId +"</a>" + "</td>" +
+                      "<td scope='row'>"+ "<a href='#' target='_blank' onclick='getApplicantData(\"" + String(data[i].userId) + "\"); return false;' >" + data[i].userId +"</a>" + "</td>" +
                           element +
                         "</tr>";
                   console.log(tr);
                   $('#tableBody').append(tr);
               }
+        }
+
+        function ReplaceContent(NC){
+            document.open();
+            document.write(NC);
+            document.close();
         }
 
         function getApplicantData(userId){
@@ -172,12 +181,15 @@
                 "password" : ""
 
             };
-            var url = "/applicantdata/" + String(userId);
+            var url = "/applicantdata" ;
             $.ajax({
                 url : url,
-                type : 'get',
+                type : 'post',
+                datatype : 'json',
+                contentType : 'application/json',
+                data : JSON.stringify(data),
                 success : function(data){
-                    window.location.href = url;
+                    ReplaceContent(data);
                 },
                 error : function(data){
                     console.log("error occured");

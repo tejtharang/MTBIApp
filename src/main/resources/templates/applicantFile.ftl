@@ -735,9 +735,7 @@
                     The student's personal statement is available for download at this link
                 </div>
                 <div class="col-md-4">
-
-                <!-- <a href="/${(studentPersonalStatement.locationOfFile)!''}" target="_blank">Download</a> -->
-                    <a href="" target="_blank">Download</a>
+                    <a href="/personalStatement/${(name.getUserId())!""}" target="_blank">Download</a>
                 </div>
             </div>
         </div>

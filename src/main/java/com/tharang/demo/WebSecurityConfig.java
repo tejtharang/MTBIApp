@@ -37,9 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 .antMatchers("/register","/registerUser",
                         "/welcome","/signin","/loginAuthentication","/adminLoginAuthentication",
-                        "/adminWelcome","/adminRegister","/registerAdmin","/signinAdmin","/applicantdata","/submit","/save").permitAll()
+                        "/adminWelcome","/adminRegister","/registerAdmin","/signinAdmin","/submit","/save").permitAll()
                 .antMatchers("/asu.png","/MTBIlogo.png","/mtbi_online_app_checklist.pdf","/Faculty_Letter_Of_Recommendation_Form.pdf").permitAll()
-                .antMatchers("/applicantList","/form_submitted").authenticated()
+                .antMatchers("/applicantList","/form_submitted","/consolidated","/personalStatement","/applicantdata","/specificapplicantdata").authenticated()
                 .anyRequest().authenticated();
 
     }

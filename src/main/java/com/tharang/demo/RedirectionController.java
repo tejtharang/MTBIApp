@@ -34,8 +34,10 @@ import com.tharang.demo.submission.StudentSubmission;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -46,7 +48,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponents;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +141,7 @@ public class RedirectionController {
     }
     */
 
+    protected Model globalModel = null;
 
     @GetMapping(value = "/adminRegister")
     public String adminAccountCreationPage(){ return "newAdmin.html";}
@@ -177,16 +187,21 @@ public class RedirectionController {
         return "adminLogin.html";
     }
 
-
-    @GetMapping(path="/applicantdata/{applicantId}")
-    public String giveFreemarker(@PathVariable("applicantId") String applicantId, Model model, Authentication authentication){
+    @GetMapping(value="/specificapplicantdata")
+    public String loadFreemarket(Model model){
+        model = this.globalModel;
+        return "applicantFile";
+    }
+    @RequestMapping(path="/applicantdata", method = RequestMethod.POST)
+    @Consumes(value="application/json")
+    public String giveFreemarker(@RequestBody Login login, Model model, Authentication authentication){
 
         com.tharang.demo.model.User user = userService.findByUsername(authentication.getName());
         Role role = roleRepository.findDistinctByUsername(authentication.getName());
         if(user.getActive().equals("INACTIVE") || !role.getRoleName().equals("ADMIN")){
             return "error";
         }
-
+        String applicantId = login.getUsername();
         StudentEligibility studentEligibility = null;
         StudentName studentName = null;
         StudentHomeAddressAndPhone studentHomeAddressAndPhone = null;
@@ -266,7 +281,26 @@ public class RedirectionController {
         model.addAttribute("studentMathematicsAndScienceCoursesCompleted",studentMathematicsAndScienceCoursesCompleted);
         model.addAttribute("studentPersonalStatement",studentPersonalStatement);
         model.addAttribute("studentFinalWaiver", studentFinalWaiver);
+
         return "applicantFile";
+    }
+
+    @RequestMapping(path="/personalStatement/{applicantId}", method=RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> servePersonalStatement(@PathVariable String applicantId){
+
+        String locationOfFile = studentPersonalStatementRepository.findByUserId(applicantId).getLocationOfFile();
+        try {
+            InputStreamResource resource;
+
+            resource = new InputStreamResource(new FileInputStream(locationOfFile));
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            return new ResponseEntity<>(resource,headers,HttpStatus.OK);
+        }
+        catch(FileNotFoundException e){
+            LOGGER.error(e);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

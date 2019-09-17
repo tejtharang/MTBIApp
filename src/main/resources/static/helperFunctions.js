@@ -1020,7 +1020,7 @@ function submitform(){
         acknowledgement3 = "yes";
     }
     if(acknowledgement1 !="yes" || acknowledgement2 != "yes" || acknowledgement3 !="yes"){
-        flag = "Please check the final acknoledgements!";
+        flag = "Please check the final acknowledgements!";
     }
 
     var facultyRecommendationList = ["recommenderFullName","recommenderPosition","recommenderEmail","recommenderAddress","recommenderNumber"]
